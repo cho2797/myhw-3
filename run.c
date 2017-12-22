@@ -195,8 +195,13 @@ m_realloc(void* ptr, size_t size)
      return i->data;
 
    }//paste beefor data isn't already impltmented
-  
-  i->free = 1;
+ if(size < i->size)
+ {
+    memset(i+META_SIZE+size,"\0",size);
+   
+ }
+ else
+ { i->free = 1;
   p_meta new2;
   new2 = sbrk(size+META_SIZE);
   new2->size = size;
@@ -207,5 +212,5 @@ m_realloc(void* ptr, size_t size)
   i->next = new2;
   new2->prev = i;
   memcpy(new2->data,i->data,(i->size));
-  
+  }
 }
